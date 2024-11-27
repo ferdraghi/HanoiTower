@@ -10,6 +10,7 @@ enum GameViewModelState {
     case playing, failedMove, successfulMove, completed
 }
 
+@MainActor
 class GameViewModel: ObservableObject {
     let towerSize: Int
     var towers: [Tower]

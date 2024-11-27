@@ -10,6 +10,7 @@ import SwiftUI
 struct GameplayScreen: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var gameViewModel: GameViewModel
+    @EnvironmentObject var gameStats: GameStatsViewModel
     var towerSize: Int {
         gameViewModel.towerSize
     }
@@ -18,6 +19,10 @@ struct GameplayScreen: View {
         VStack {
             GameplayHeaderView(currentMoves: gameViewModel.moves,
                                perfectMoveCount: gameViewModel.perfectMoveCount) {
+                gameStats.endedGameWithResult(.init(towerSize: gameViewModel.towerSize,
+                                                    solved: false,
+                                                    solvedMoves: nil,
+                                                    pefectlySolved: nil))
                 dismiss()
             }
             
@@ -41,6 +46,16 @@ struct GameplayScreen: View {
             .padding(.bottom, 260)
             .padding([.leading, .trailing], 30)
         }
+        .onChange(of: gameViewModel.state) { _, newValue in
+            if newValue == .completed {
+                gameStats.endedGameWithResult(.init(towerSize: gameViewModel.towerSize,
+                                                    solved: true,
+                                                    solvedMoves: gameViewModel.moves,
+                                                    pefectlySolved: gameViewModel.moves == gameViewModel.perfectMoveCount))
+                dismiss()
+            }
+        }
+    
     }
 }
 

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var gameStats: GameStatsViewModel
     @State private var startGame = false
     @State private var towerSize = 4
     let towerSizes = Array(4...10)
@@ -16,7 +17,9 @@ struct ContentView: View {
             GameTitleParallaxView()
                 .padding(.top, 80)
             Spacer()
-            TowerSizeSelectorView(towerSize: $towerSize)
+            TowerSizeSelectorView(towerSize: $towerSize,
+                                  solvedSizes: gameStats.sizesSolved,
+                                  perfectlySolvedSizes: gameStats.sizesPerfectlySolved)
                 .padding([.leading, .trailing], 40)
             
             Spacer()
@@ -27,6 +30,7 @@ struct ContentView: View {
         .fullScreenCover(isPresented: $startGame) {
             GameplayScreen()
                 .environmentObject(GameViewModel(towerSize: towerSize))
+                .environmentObject(gameStats)
         }
         .onChange(of: towerSize) { _, _ in}
         .padding()
