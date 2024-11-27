@@ -19,15 +19,19 @@ struct PlayButtonView: View {
                     Rectangle()
                         .foregroundStyle(.mint)
                         .clipShape(.rect(cornerRadius: 12))
-                        .shadow(color: .gray, radius: 15)
+                        .shadow(color: .gray, radius: animating ? 25 : 5)
                     Text("PLAY!")
                         .foregroundStyle(.white)
                         .font(.title)
                         .bold()
-                        .shadow(color: .gray, radius: 5)
+                        .shadow(color: .gray, radius: animating ? 5 : 0)
                 }
+                .animation(.easeInOut(duration: 2).repeatForever(), value: animating)
             }
             .frame(width: 200, height: 40)
+        }
+        .onAppear() {
+            animating.toggle()
         }
     }
 }
