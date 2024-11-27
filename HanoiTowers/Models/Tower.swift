@@ -8,17 +8,20 @@
 import Foundation
 
 struct Tower {
-    private(set) var pieces = [TowerPiece]()
+    private var _pieces = [TowerPiece]()
+    var pieces: [TowerPiece] {
+        _pieces.reversed()
+    }
 
     mutating func stack(_ piece: TowerPiece) {
-        pieces.append(piece)
+        _pieces.append(piece)
     }
     
     mutating func topPiece() -> TowerPiece? {
-        pieces.popLast()
+        _pieces.popLast()
     }
     
-    func peekLast() -> TowerPiece? {
-        pieces.last
+    func peekTopPiece() -> TowerPiece? {
+        _pieces.last
     }
 }

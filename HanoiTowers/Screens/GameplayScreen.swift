@@ -48,8 +48,8 @@ struct GameplayScreen: View {
                         Spacer()
                         VStack(spacing: 3) {
                             Spacer()
-                            ForEach(gameViewModel.towers[index].pieces.reversed()) { piece in
-                                TowerPieceView(pieceSize: piece.size)
+                            ForEach(gameViewModel.towers[index].pieces) { piece in
+                                TowerPieceView(pieceSize: piece.size, selected: piece.size == (gameViewModel.selectedPiece ?? -1))
                             }
                         }
                         .frame(width: 100, height: 500)

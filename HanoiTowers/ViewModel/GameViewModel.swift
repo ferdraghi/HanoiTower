@@ -19,7 +19,17 @@ class GameViewModel: ObservableObject {
     }
     @Published var state: GameViewModelState = .playing
 
-    @Published private(set) var selectedTower: Int?
+    @Published private(set) var selectedTower: Int? {
+        didSet {
+            guard let tower = selectedTower else {
+                selectedPiece = nil
+                return
+            }
+            
+            selectedPiece = towers[tower].peekTopPiece()?.size
+        }
+    }
+    @Published private(set) var selectedPiece: Int?
     
     init(towerSize: Int) {
         self.towerSize = towerSize
@@ -62,9 +72,9 @@ class GameViewModel: ObservableObject {
     }
     
     private func testMovePiece(from start: Tower, to target: Tower) -> Bool {
-        guard let testPiece = start.peekLast() else { return false }
+        guard let testPiece = start.peekTopPiece() else { return false }
         
-        if (target.peekLast()?.size ?? Int.max) > testPiece.size {
+        if (target.peekTopPiece()?.size ?? Int.max) > testPiece.size {
             return true
         }
         
