@@ -11,9 +11,7 @@ import SwiftUI
 struct HanoiTowersApp: App {
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
-                ContentView()
-            }
+            ContentView()
         }
     }
 }

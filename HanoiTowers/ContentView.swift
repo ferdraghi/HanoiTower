@@ -35,7 +35,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    NavigationStack {
-        ContentView()
-    }
+    ContentView()
 }
