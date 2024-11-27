@@ -13,7 +13,7 @@ struct ContentView: View {
     let towerSizes = Array(4...10)
     var body: some View {
         VStack {
-            GameTitleView()
+            GameTitleParallaxView()
                 .padding(.top, 80)
             Spacer()
             TowerSizeSelectorView(towerSize: $towerSize)

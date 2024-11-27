@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PlayButtonView: View {
     @Binding var startGame: Bool
+    @State private var animating = false
     var body: some View {
         VStack {
             Button {
