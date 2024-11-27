@@ -10,22 +10,24 @@ import SwiftUI
 struct GameTitleView: View {
     @State private var shiftColors = false
     var body: some View {
-        VStack {
-            LinearGradient(
-                colors: [.red, .blue, .green, .yellow],
-                startPoint: .leading,
-                endPoint: .trailing
-            )
-            .mask {
-                Text("Hanoi Towers")
-                    .font(.system(size: 50, weight: .heavy, design: .rounded ))
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.5)
-                    .shadow(color: .white, radius: 5)
+        GeometryReader { g in
+            VStack {
+                LinearGradient(
+                    colors: [.red, .blue, .green, .yellow],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+                .mask {
+                    Text("Hanoi Towers")
+                        .font(.system(size: 50, weight: .heavy, design: .rounded ))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
+                        .shadow(color: .white, radius: 5)
+                }
+                .frame(width: g.size.width, height: 80)
             }
-            .hueRotation(.degrees(shiftColors ? 720 : 0))
+            .hueRotation(.degrees(shiftColors ? 720 : 360))
             .animation(.linear(duration: 2).repeatForever(autoreverses: true), value: shiftColors)
-            .frame(height: 80)
         }
         .onAppear() {
             shiftColors.toggle()
@@ -54,6 +56,7 @@ struct GameTitleParallaxView: View {
                                          y: animating ? animatingAxis.0.y : animatingAxis.1.y,
                                          z: animating ? animatingAxis.0.z : animatingAxis.1.z),
                                   anchorZ: 50)
+                .animation(.easeInOut(duration: 3.5).repeatForever(), value: animating)
             ForEach(1..<4) { i in
                 GameTitleView()
                     .opacity(0.25)
@@ -63,12 +66,16 @@ struct GameTitleParallaxView: View {
                                              z: animating ? animatingAxis.0.z : animatingAxis.1.z),
                                       anchorZ: 50 - CGFloat((30 * i)))
             }
+            .animation(.easeInOut(duration: 3.5).repeatForever(), value: animating)
         }
-        .animation(.easeInOut(duration: 3.5).repeatForever(), value: animating)
         .onAppear() {
             animating.toggle()
         }
     }
+}
+
+#Preview {
+    GameTitleView()
 }
 
 #Preview {
