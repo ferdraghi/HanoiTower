@@ -16,49 +16,21 @@ struct GameplayScreen: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Text("Moves: \(gameViewModel.moves)")
-                    .font(.largeTitle)
-                    .monospacedDigit()
-                    .padding(.leading, 30)
-                Spacer()
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "xmark.square.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 40)
-                        .foregroundStyle(.red.opacity(0.8))
-                }
-                .padding()
-            }
-            HStack {
-                Text("Perfect Moves: \(gameViewModel.perfectMoveCount)")
-                    .font(.headline)
-                    .monospacedDigit()
-                    .padding(.leading, 30)
-                Spacer()
+            GameplayHeaderView(currentMoves: gameViewModel.moves,
+                               perfectMoveCount: gameViewModel.perfectMoveCount) {
+                dismiss()
             }
             
             Spacer()
             HStack(alignment: .bottom) {
                 ForEach(0...2, id: \.self) { index in
-                    VStack {
-                        Spacer()
-                        VStack(spacing: 3) {
-                            Spacer()
-                            ForEach(gameViewModel.towers[index].pieces) { piece in
-                                TowerPieceView(pieceSize: piece.size, selected: piece.size == (gameViewModel.selectedPiece ?? -1))
-                            }
-                        }
-                        .frame(width: 100, height: 500)
-                        
-                        .background(.blue.opacity(gameViewModel.selectedTower == index ? 0.5 : 0.15))
-                        .onTapGesture {
-                            guard gameViewModel.state == . playing else { return }
-                            gameViewModel.selectedTower(index)
-                        }
+                    TowerView(towerSize: towerSize,
+                              pieces: gameViewModel.towers[index].pieces,
+                              selectedPiece: gameViewModel.selectedPiece,
+                              towerSelected: gameViewModel.selectedTower == index)
+                    .onTapGesture {
+                        guard gameViewModel.state == . playing else { return }
+                        gameViewModel.selectedTower(index)
                     }
                     .frame(width: 100)
                     .padding(.trailing, index == 2 ? 0 : 20)
@@ -74,5 +46,5 @@ struct GameplayScreen: View {
 
 #Preview {
     GameplayScreen()
-        .environmentObject(GameViewModel(towerSize: 4))
+        .environmentObject(GameViewModel(towerSize: 10))
 }

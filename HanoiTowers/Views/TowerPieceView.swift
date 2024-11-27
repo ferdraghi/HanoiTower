@@ -19,8 +19,7 @@ struct TowerPieceView: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
-                .frame(width: 40 + CGFloat(10 * Double(pieceSize)), height: 45)
-                //.clipShape(.rect(cornerRadius: 10))
+                .frame(width: 40 * CGFloat(1 + (0.166 * Double(pieceSize - 1))) , height: 25)
                 .foregroundStyle(.red)
                 .overlay {
                     RoundedRectangle(cornerRadius: 10)
@@ -30,15 +29,23 @@ struct TowerPieceView: View {
             Text("\(pieceSize)")
                 .monospacedDigit()
                 .bold()
-                .font(.largeTitle)
+                .font(.title2)
                 .shadow(color: .white, radius: 3, x: 1, y: 1)
         }
     }
 }
 
 #Preview {
-    VStack {
-        TowerPieceView(pieceSize: 4)
-        TowerPieceView(pieceSize: 4, selected: true)
+    HStack(spacing: 40) {
+        VStack {
+            ForEach(1..<11) { index in
+                TowerPieceView(pieceSize: index)
+            }
+        }
+        VStack {
+            ForEach(1..<11) { index in
+                TowerPieceView(pieceSize: index, selected: true)
+            }
+        }
     }
 }
