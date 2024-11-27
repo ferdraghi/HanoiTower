@@ -13,18 +13,16 @@ struct ContentView: View {
     let towerSizes = Array(4...10)
     var body: some View {
         VStack {
-            VStack {
-                GameTitleView()
-                    .padding(.top, 80)
-                
-                TowerSizeSelectorView(towerSize: $towerSize)
-                    .padding([.leading, .trailing], 40)
-                //.padding(.top, 80)
-            }
+            GameTitleView()
+                .padding(.top, 80)
+            Spacer()
+            TowerSizeSelectorView(towerSize: $towerSize)
+                .padding([.leading, .trailing], 40)
+            
             Spacer()
             
             PlayButtonView(startGame: $startGame)
-            .padding(.bottom, 140)
+                .padding(.bottom, 140)
         }
         .fullScreenCover(isPresented: $startGame) {
             GameplayScreen()
