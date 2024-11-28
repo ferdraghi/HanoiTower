@@ -1,30 +1,29 @@
 //
-//  PlayButton.swift
+//  ResetStatsButton.swift
 //  HanoiTowers
 //
 //  Created by Fernando Draghi on 27/11/2024.
 //
-
 import SwiftUI
 
-struct PlayButtonView: View {
-    @Binding var startGame: Bool
+struct ResetStatsButton: View {
+    @Binding var resetStats: Bool
     @State private var animating = false
     var body: some View {
         VStack {
             Button {
-                startGame.toggle()
+                resetStats.toggle()
             } label: {
                 ZStack {
                     Rectangle()
-                        .foregroundStyle(.mint)
+                        .foregroundStyle(.red)
                         .clipShape(.rect(cornerRadius: 12))
-                        .shadow(color: .mint, radius: animating ? 25 : 5)
-                    Text("PLAY!")
+                        .shadow(color: .red, radius: animating ? 25 : 5)
+                    Text("Reset stats")
                         .foregroundStyle(.white)
                         .font(.system(size: 25, weight: .heavy, design: .rounded ))
                         .bold()
-                        .shadow(color: .white, radius: animating ? 5 : 0)
+                        .shadow(color: .red, radius: animating ? 5 : 0)
                 }
                 .animation(.easeInOut(duration: 2).repeatForever(), value: animating)
             }
@@ -37,5 +36,5 @@ struct PlayButtonView: View {
 }
 
 #Preview {
-    PlayButtonView(startGame: .constant(false))
+    ResetStatsButton(resetStats: .constant(false))
 }

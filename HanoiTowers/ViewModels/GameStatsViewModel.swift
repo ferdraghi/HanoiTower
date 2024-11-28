@@ -13,13 +13,15 @@ class GameStatsViewModel: ObservableObject {
 
     private let smallestSize: Int
     private let biggestSize: Int
+    private let usingSampleData: Bool
     private var savePath: URL {
         FileManager.documentsDirectory.appendingPathComponent("gameStats.json")
     }
     
-    init(smallestSize: Int = 4, biggestSize: Int = 10) {
+    init(smallestSize: Int = 4, biggestSize: Int = 10, useSampleData: Bool = false) {
         self.smallestSize = smallestSize
         self.biggestSize = biggestSize
+        self.usingSampleData = useSampleData
         loadStats()
     }
     
@@ -55,7 +57,16 @@ class GameStatsViewModel: ObservableObject {
         saveStats()
     }
     
+    func resetAllStats() {
+        stats = []
+        initializeNewStats()
+    }
+    
     private func loadStats() {
+        guard !usingSampleData else {
+            loadSampleData()
+            return
+        }
         do {
             let data = try Data(contentsOf: savePath)
             stats = try JSONDecoder().decode([TowerSolvedStat].self, from: data)
@@ -66,6 +77,9 @@ class GameStatsViewModel: ObservableObject {
     }
     
     private func saveStats() {
+        guard !usingSampleData else {
+            return
+        }
         do {
             let data = try JSONEncoder().encode(stats)
             try data.write(to: savePath)
@@ -75,7 +89,22 @@ class GameStatsViewModel: ObservableObject {
     }
     
     private func initializeNewStats() {
+        guard !usingSampleData else {
+            return
+        }
         stats = Array(4...10).map { TowerSolvedStat(size: $0, solved: false, perfectlySolved: false, bestSolvedMoves: nil) }
         saveStats()
+    }
+    
+    private func loadSampleData() {
+        stats = [
+            .init(size: 4, solved: true, perfectlySolved: true, bestSolvedMoves: 15),
+            .init(size: 5, solved: true, perfectlySolved: true, bestSolvedMoves: 31),
+            .init(size: 6, solved: true, perfectlySolved: true, bestSolvedMoves: 63),
+            .init(size: 7, solved: true, perfectlySolved: false, bestSolvedMoves: 154),
+            .init(size: 8, solved: true, perfectlySolved: false, bestSolvedMoves: 387),
+            .init(size: 9, solved: false, perfectlySolved: false, bestSolvedMoves: nil),
+            .init(size: 10, solved: false, perfectlySolved: false, bestSolvedMoves: nil)
+        ]
     }
 }
