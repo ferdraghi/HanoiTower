@@ -19,7 +19,7 @@ struct GameTitleView: View {
                 )
                 .mask {
                     Text("Hanoi\nTowers")
-                        .font(.system(size: 150, weight: .heavy, design: .rounded ))
+                        .font(.gameFont(size: 150))
                         .lineLimit(2)
                         .multilineTextAlignment(.center)
                         .minimumScaleFactor(0.5)

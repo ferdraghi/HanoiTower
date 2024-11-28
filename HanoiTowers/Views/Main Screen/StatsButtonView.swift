@@ -22,7 +22,7 @@ struct StatsButtonView: View {
                         .shadow(color: .purple, radius: animating ? 14 : 5)
                     Text("STATS")
                         .foregroundStyle(.white.opacity(0.8))
-                        .font(.system(size: 20, weight: .heavy, design: .rounded ))
+                        .font(.gameFont(size: 20))
                         .bold()
                         .shadow(color: .gray, radius: animating ? 5 : 0)
                 }

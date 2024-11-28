@@ -13,19 +13,19 @@ struct GameStatsRowView: View {
         VStack(alignment: .leading) {
             HStack {
                 Text("\(stat.size)")
-                    .font(.system(size: 15, weight: .heavy, design: .rounded ))
+                    .font(.gameFont(size: 15))
                     .frame(width: 40, alignment: .center)
                 Image(systemName: stat.solved ? "checkmark" : "xmark")
                     .foregroundStyle(stat.solved ? .green : .red)
-                    .font(.system(size: 20, weight: .heavy, design: .rounded ))
+                    .font(.gameFont(size: 20))
                     .frame(width: 100, alignment: .center)
                 Image(systemName: "star.fill")
                     .foregroundStyle(.yellow)
-                    .font(.system(size: 20, weight: .heavy, design: .rounded ))
+                    .font(.gameFont(size: 20))
                     .opacity(stat.perfectlySolved ? 1.0 : 0)
                     .frame(width: 80, alignment: .center)
                 Text("\(stat.bestSolvedMoves ?? 0)")
-                    .font(.system(size: 15, weight: .heavy, design: .rounded ))
+                    .font(.gameFont(size: 15))
                     .opacity(stat.solved ? 1.0 : 0)
                     .frame(width: 80, alignment: .center)
             }

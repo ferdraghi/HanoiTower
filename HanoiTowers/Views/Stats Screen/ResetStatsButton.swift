@@ -21,7 +21,7 @@ struct ResetStatsButton: View {
                         .shadow(color: .red, radius: animating ? 25 : 5)
                     Text("Reset stats")
                         .foregroundStyle(.white)
-                        .font(.system(size: 25, weight: .heavy, design: .rounded ))
+                        .font(.gameFont)
                         .bold()
                         .shadow(color: .red, radius: animating ? 5 : 0)
                 }

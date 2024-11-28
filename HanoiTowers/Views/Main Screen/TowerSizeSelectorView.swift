@@ -16,7 +16,7 @@ struct TowerSizeSelectorView: View {
     var body: some View {
         HStack {
             Text("Tower Size:")
-                .font(.system(size: 25, weight: .heavy, design: .rounded ))
+                .font(.gameFont)
                 .multilineTextAlignment(.center)
                 .padding(.trailing, 20)
             
@@ -24,7 +24,7 @@ struct TowerSizeSelectorView: View {
                 ForEach(towerSizes, id:\.self) { size in
                     HStack {
                         Text("\(size)")
-                            .font(.system(size: 25, weight: .heavy, design: .rounded ))
+                            .font(.gameFont)
                             .tag(size)
                         Image(systemName: perfectlySolvedSizes.contains(size) ? "star.fill" : "checkmark")
                             .foregroundStyle(perfectlySolvedSizes.contains(size) ? .yellow :

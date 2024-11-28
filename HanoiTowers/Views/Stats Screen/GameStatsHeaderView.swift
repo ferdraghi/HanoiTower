@@ -12,16 +12,16 @@ struct GameStatsHeadersView: View {
         VStack(alignment: .leading) {
             HStack {
                 Text("Size")
-                    .font(.system(size: 15, weight: .heavy, design: .rounded ))
+                    .font(.gameFont(size: 15))
                     .frame(width: 40, alignment: .center)
                 Text("Completed")
-                    .font(.system(size: 15, weight: .heavy, design: .rounded ))
+                    .font(.gameFont(size: 15))
                     .frame(width: 100, alignment: .center)
                 Text("Perfect")
-                    .font(.system(size: 15, weight: .heavy, design: .rounded ))
+                    .font(.gameFont(size: 15))
                     .frame(width: 80, alignment: .center)
                 Text("Best Run")
-                    .font(.system(size: 15, weight: .heavy, design: .rounded ))
+                    .font(.gameFont(size: 15))
                     .frame(width: 80, alignment: .center)
             }
             Rectangle()

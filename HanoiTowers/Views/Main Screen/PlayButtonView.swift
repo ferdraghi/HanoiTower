@@ -22,7 +22,7 @@ struct PlayButtonView: View {
                         .shadow(color: .mint, radius: animating ? 25 : 5)
                     Text("PLAY!")
                         .foregroundStyle(.white)
-                        .font(.system(size: 25, weight: .heavy, design: .rounded ))
+                        .font(.gameFont)
                         .bold()
                         .shadow(color: .white, radius: animating ? 5 : 0)
                 }
