@@ -29,13 +29,11 @@ struct GameplayScreen: View {
             Spacer()
             HStack(alignment: .bottom) {
                 ForEach(0...2, id: \.self) { index in
-                    TowerView(towerSize: towerSize,
-                              pieces: gameViewModel.towers[index].pieces,
-                              selectedPiece: gameViewModel.selectedPiece,
-                              towerSelected: gameViewModel.selectedTower == index)
+                    TowerView(towerSize: towerSize)
+                    .environmentObject(gameViewModel.towerViewModels[index])
                     .onTapGesture {
                         guard gameViewModel.state == . playing else { return }
-                        gameViewModel.selectedTower(index)
+                        gameViewModel.selectTower(index)
                     }
                     .frame(width: 100)
                     .padding(.trailing, index == 2 ? 0 : 20)

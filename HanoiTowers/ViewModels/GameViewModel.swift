@@ -13,36 +13,39 @@ enum GameViewModelState {
 @MainActor
 class GameViewModel: ObservableObject {
     let towerSize: Int
-    var towers: [Tower]
+    private(set) var towerViewModels: [GameTowerViewModel] = []
     private(set) var moves = 0
+    private(set) var lastSuccessfulMove: Int?
     var perfectMoveCount: Int {
         Int(pow(2, Double(towerSize))) - 1
     }
     @Published var state: GameViewModelState = .playing
 
     @Published private(set) var selectedTower: Int? {
-        didSet {
-            guard let tower = selectedTower else {
-                selectedPiece = nil
+        willSet {
+            guard let tower = newValue else {
+                if let current = selectedTower {
+                    towerViewModels[current].selected = false
+                }
                 return
             }
-            
-            selectedPiece = towers[tower].peekTopPiece()?.size
+            towerViewModels[tower].selected = true
         }
     }
-    @Published private(set) var selectedPiece: Int?
     
     init(towerSize: Int) {
         self.towerSize = towerSize
-        self.towers = [Tower(), Tower(), Tower()]
-        Array(0..<towerSize).map { TowerPiece(size: towerSize-$0) }.forEach { piece in
-            self.towers[0].stack(piece)
-        }
+        self.towerViewModels = [GameTowerViewModel(numberOfPieces: towerSize), GameTowerViewModel(numberOfPieces: 0), GameTowerViewModel(numberOfPieces: 0)]
     }
     
-    func selectedTower(_ number: Int) {
+    func piecesForTower(_ tower: Int) -> [TowerPiece] {
+        guard tower >= 0, tower < towerViewModels.count else { return [] }
+        return towerViewModels[tower].tower.pieces
+    }
+    
+    func selectTower(_ number: Int) {
         guard
-            number < towers.count,
+            number < towerViewModels.count,
             selectedTower != number
         else {
             selectedTower = nil
@@ -50,9 +53,10 @@ class GameViewModel: ObservableObject {
         }
         
         if let selectedTower = selectedTower {
-            let result = testMovePiece(from: towers[selectedTower], to: towers[number])
+            let result = testMovePiece(from: towerViewModels[selectedTower], to: towerViewModels[number])
             if (result) {
-                towers[number].stack(towers[selectedTower].topPiece()!)
+                lastSuccessfulMove = number
+                towerViewModels[number].getTopPieceFrom(towerViewModels[selectedTower])
                 moves += 1
             }
             updateStateWithMoveResult(result)
@@ -67,15 +71,15 @@ class GameViewModel: ObservableObject {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
             guard let self = self else { return }
             
-            let completed = self.towers[2].pieces.count == self.towerSize
+            let completed = self.towerViewModels[2].pieceCount == self.towerSize
             state = completed ? .completed : .playing
         }
     }
     
-    private func testMovePiece(from start: Tower, to target: Tower) -> Bool {
-        guard let testPiece = start.peekTopPiece() else { return false }
+    private func testMovePiece(from start: GameTowerViewModel, to target: GameTowerViewModel) -> Bool {
+        guard let testPieceSize = start.topPieceSize else { return false }
         
-        if (target.peekTopPiece()?.size ?? Int.max) > testPiece.size {
+        if (target.topPieceSize ?? Int.max) > testPieceSize {
             return true
         }
         

@@ -9,6 +9,7 @@ import Foundation
 
 struct Tower {
     private var _pieces = [TowerPiece]()
+
     var pieces: [TowerPiece] {
         _pieces.reversed()
     }
