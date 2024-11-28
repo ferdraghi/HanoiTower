@@ -16,16 +16,15 @@ struct TowerSizeSelectorView: View {
     var body: some View {
         HStack {
             Text("Tower Size:")
-                .font(.title)
-                .bold()
+                .font(.system(size: 25, weight: .heavy, design: .rounded ))
+                .multilineTextAlignment(.center)
                 .padding(.trailing, 20)
             
             Picker("Tower Size", selection: $towerSize) {
                 ForEach(towerSizes, id:\.self) { size in
                     HStack {
                         Text("\(size)")
-                            .font(.title)
-                            .bold()
+                            .font(.system(size: 25, weight: .heavy, design: .rounded ))
                             .tag(size)
                         Image(systemName: perfectlySolvedSizes.contains(size) ? "star.fill" : "checkmark")
                             .foregroundStyle(perfectlySolvedSizes.contains(size) ? .yellow :
