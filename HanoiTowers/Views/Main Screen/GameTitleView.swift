@@ -51,6 +51,16 @@ struct GameTitleParallaxView: View {
         .init(x: -45, y: -90, z: -85))
     var body: some View {
         ZStack {
+            ForEach(1..<6) { i in
+                GameTitleView()
+                    .opacity(0.33 * (1.0 / CGFloat(i)))
+                    .rotation3DEffect(.degrees(animating ? animatingAngleDegrees.0 : animatingAngleDegrees.1),
+                                      axis: (x: animating ? animatingAxis.0.x : animatingAxis.1.x,
+                                             y: animating ? animatingAxis.0.y : animatingAxis.1.y,
+                                             z: animating ? animatingAxis.0.z : animatingAxis.1.z),
+                                      anchorZ: 50 + CGFloat((30 * i)))
+                    .animation(.easeInOut(duration: 20).repeatForever(), value: animating)
+            }
             GameTitleView()
                 .rotation3DEffect(.degrees(animating ? animatingAngleDegrees.0 : animatingAngleDegrees.1),
                                   axis: (x: animating ? animatingAxis.0.x : animatingAxis.1.x,
