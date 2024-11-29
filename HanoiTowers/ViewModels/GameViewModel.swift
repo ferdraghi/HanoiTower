@@ -34,7 +34,7 @@ class GameViewModel: ObservableObject {
         }
     }
     
-    func prepareGameWithWoterSize(_ size: Int, towerCount: Int = 3) {
+    func prepareGameWithTowerSize(_ size: Int, towerCount: Int = 3) {
         state = .idle
         towerSize = size
         self.towerCount = towerCount

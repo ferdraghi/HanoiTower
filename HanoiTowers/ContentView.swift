@@ -28,7 +28,7 @@ struct ContentView: View {
                 .padding([.leading, .trailing], 40)
                 Spacer()
                 PlayButtonView {
-                    gameViewModel.prepareGameWithWoterSize(towerSize)
+                    gameViewModel.prepareGameWithTowerSize(towerSize)
                     startGame.toggle()
                 }
                 .padding(.bottom, 80)

@@ -78,6 +78,6 @@ struct GameplayScreen: View {
         .environmentObject(gameViewModel)
         .environmentObject(GameStatsViewModel(useSampleData: true))
         .task {
-        gameViewModel.prepareGameWithWoterSize(4)
+        gameViewModel.prepareGameWithTowerSize(4)
     }
 }
