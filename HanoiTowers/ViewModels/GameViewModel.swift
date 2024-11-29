@@ -68,7 +68,7 @@ class GameViewModel: ObservableObject {
     private func updateStateWithMoveResult(_ result: Bool) {
         state = result ? .successfulMove : .failedMove
         selectedTower = nil
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [weak self] in
             guard let self = self else { return }
             
             let completed = self.towerViewModels[2].pieceCount == self.towerSize
