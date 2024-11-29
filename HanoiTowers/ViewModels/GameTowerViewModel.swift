@@ -31,8 +31,17 @@ class GameTowerViewModel: ObservableObject {
         tower.stack(piece)
     }
     
+    func handOverTopPiece() -> TowerPiece? {
+        guard pieceCount > 0 else { return nil }
+        
+        let piece = tower.topPiece()
+        pieceCount = tower.pieces.count
+        
+        return piece
+    }
+    
     func getTopPieceFrom(_ towerVM: GameTowerViewModel) {
-        guard let newPiece = towerVM.tower.topPiece() else { return }
+        guard let newPiece = towerVM.handOverTopPiece() else { return }
         
         tower.stack(newPiece)
         pieceCount = tower.pieces.count
