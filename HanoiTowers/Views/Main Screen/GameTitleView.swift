@@ -7,36 +7,6 @@
 
 import SwiftUI
 
-struct GameTitleView: View {
-    @State private var shiftColors = false
-    var body: some View {
-        GeometryReader { g in
-            VStack {
-                LinearGradient(
-                    colors: [.red, .blue, .green, .yellow],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-                .mask {
-                    Text("Hanoi\nTowers")
-                        .font(.gameFont(size: 150))
-                        .lineLimit(2)
-                        .multilineTextAlignment(.center)
-                        .minimumScaleFactor(0.5)
-                        .shadow(color: .white, radius: 5)
-                }
-                .frame(width: g.size.width, height: 200)
-            }
-            .hueRotation(.degrees(shiftColors ? 720 : 360))
-            .animation(.linear(duration: 2).repeatForever(autoreverses: true), value: shiftColors)
-        }
-        .onAppear() {
-            shiftColors.toggle()
-        }
-
-    }
-}
-
 struct ParallaxImageStackAxis {
     var x: CGFloat
     var y: CGFloat
@@ -49,10 +19,11 @@ struct GameTitleParallaxView: View {
     private var animatingAxis: (ParallaxImageStackAxis, ParallaxImageStackAxis) = (
         .init(x: -90, y: -45, z: -30),
         .init(x: -45, y: -90, z: -85))
+    private let title = "Hanoi Towers"
     var body: some View {
         ZStack {
             ForEach(1..<6) { i in
-                GameTitleView()
+                RainbowTextView(title, size: 150)
                     .opacity(0.33 * (1.0 / CGFloat(i)))
                     .rotation3DEffect(.degrees(animating ? animatingAngleDegrees.0 : animatingAngleDegrees.1),
                                       axis: (x: animating ? animatingAxis.0.x : animatingAxis.1.x,
@@ -61,7 +32,7 @@ struct GameTitleParallaxView: View {
                                       anchorZ: 50 + CGFloat((30 * i)))
                     .animation(.easeInOut(duration: 20).repeatForever(), value: animating)
             }
-            GameTitleView()
+            RainbowTextView(title, size: 150)
                 .rotation3DEffect(.degrees(animating ? animatingAngleDegrees.0 : animatingAngleDegrees.1),
                                   axis: (x: animating ? animatingAxis.0.x : animatingAxis.1.x,
                                          y: animating ? animatingAxis.0.y : animatingAxis.1.y,
@@ -69,7 +40,7 @@ struct GameTitleParallaxView: View {
                                   anchorZ: 50)
                 .animation(.easeInOut(duration: 20).repeatForever(), value: animating)
             ForEach(1..<6) { i in
-                GameTitleView()
+                RainbowTextView(title, size: 150)
                     .opacity(0.33 * (1.0 / CGFloat(i)))
                     .rotation3DEffect(.degrees(animating ? animatingAngleDegrees.0 : animatingAngleDegrees.1),
                                       axis: (x: animating ? animatingAxis.0.x : animatingAxis.1.x,
@@ -84,10 +55,6 @@ struct GameTitleParallaxView: View {
             animating.toggle()
         }
     }
-}
-
-#Preview {
-    GameTitleView()
 }
 
 #Preview {
