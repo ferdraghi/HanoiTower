@@ -40,7 +40,7 @@ class GameViewModel: ObservableObject {
     
     func piecesForTower(_ tower: Int) -> [TowerPiece] {
         guard tower >= 0, tower < towerViewModels.count else { return [] }
-        return towerViewModels[tower].tower.pieces
+        return towerViewModels[tower].pieces
     }
     
     func selectTower(_ number: Int) {

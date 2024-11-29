@@ -8,10 +8,14 @@
 import SwiftUI
 
 class GameTowerViewModel: ObservableObject {
-    private(set) var tower: Tower
+    private var tower: Tower
     @Published var selected: Bool = false
     @Published private(set) var pieceCount: Int
 
+    var pieces: [TowerPiece] {
+        tower.pieces
+    }
+    
     var topPieceSize: Int? {
         tower.peekTopPiece()?.size
     }

@@ -15,7 +15,7 @@ struct TowerView: View {
     @State private var hasNewPiece: Bool = false
     
     private var pieces: [TowerPiece] {
-        towerViewModel.tower.pieces
+        towerViewModel.pieces
     }
     
     private var towerSelected: Bool {
