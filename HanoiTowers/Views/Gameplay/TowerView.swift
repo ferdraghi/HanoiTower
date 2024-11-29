@@ -12,6 +12,7 @@ struct TowerView: View {
     let towerSize: Int
     @State private var introAnimation: Bool = false
     @State private var newPieceAnimation: Bool = false
+    @State private var hasNewPiece: Bool = false
     
     private var pieces: [TowerPiece] {
         towerViewModel.tower.pieces
@@ -33,7 +34,7 @@ struct TowerView: View {
                     TowerPieceView(pieceSize: piece.size,
                                    selected: towerSelected && index == 0)
                     .offset(x: 0, y: pieceOffsetForIndex(index))
-                    .animation(.easeIn(duration: 1.5 - (CGFloat(index) / 30.0)).speed(2), value: introAnimation)
+                    .animation(.easeIn(duration: 1.5 - (CGFloat(index * 2) / 30.0)).speed(2), value: introAnimation)
                 }
             }
             .frame(width: 100, height: 500)
@@ -41,13 +42,14 @@ struct TowerView: View {
             .onAppear() {
                 introAnimation.toggle()
             }
-            .onChange(of: towerViewModel.hasNewPiece) { _, newValue in
-                if newValue {
+            .onChange(of: towerViewModel.pieceCount) { oldValue, newValue in
+                if newValue > oldValue {
+                    hasNewPiece = true
                     withAnimation(.easeIn(duration: 1).speed(4)) {
-                        newPieceAnimation.toggle()
+                        newPieceAnimation = true
                     } completion: {
+                        hasNewPiece = false
                         newPieceAnimation = false
-                        towerViewModel.clearNewPieceStatus()
                     }
                 }
             }
@@ -55,7 +57,7 @@ struct TowerView: View {
     }
     
     private func pieceOffsetForIndex(_ index: Int) -> CGFloat {
-        guard towerViewModel.hasNewPiece else { return introAnimation ? 0 : -500 }
+        guard hasNewPiece else { return introAnimation ? 0 : -500 }
         
         if index == 0 {
             return newPieceAnimation ? 0 : -200

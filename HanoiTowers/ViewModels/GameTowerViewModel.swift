@@ -10,19 +10,16 @@ import SwiftUI
 class GameTowerViewModel: ObservableObject {
     private(set) var tower: Tower
     @Published var selected: Bool = false
-    @Published private(set) var hasNewPiece: Bool = false
+    @Published private(set) var pieceCount: Int
 
     var topPieceSize: Int? {
         tower.peekTopPiece()?.size
     }
     
-    var pieceCount: Int {
-        tower.pieces.count
-    }
-    
     init(numberOfPieces: Int) {
         self.tower = Tower()
-        
+        self.pieceCount = numberOfPieces
+
         if numberOfPieces > 0 {
             Array(0..<numberOfPieces).map { TowerPiece(size: numberOfPieces-$0) }.forEach { piece in
                 self.tower.stack(piece)
@@ -38,10 +35,6 @@ class GameTowerViewModel: ObservableObject {
         guard let newPiece = towerVM.tower.topPiece() else { return }
         
         tower.stack(newPiece)
-        hasNewPiece = true
-    }
-    
-    func clearNewPieceStatus() {
-        hasNewPiece = false
+        pieceCount = tower.pieces.count
     }
 }
