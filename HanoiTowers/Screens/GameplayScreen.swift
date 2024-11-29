@@ -15,6 +15,9 @@ struct GameplayScreen: View {
         gameViewModel.towerSize
     }
     
+    @State var gameResult: GameResult?
+    @State var showCelebration = false
+    
     var body: some View {
         VStack {
             GameplayHeaderView(currentMoves: gameViewModel.moves,
@@ -32,8 +35,9 @@ struct GameplayScreen: View {
                     TowerView(towerSize: towerSize)
                     .environmentObject(gameViewModel.towerViewModels[index])
                     .onTapGesture {
-                        guard gameViewModel.state == . playing else { return }
-                        gameViewModel.selectTower(index)
+                        if gameViewModel.state == . playing {
+                            gameViewModel.selectTower(index)
+                        }
                     }
                     .frame(width: 100)
                     .padding(.trailing, index == 2 ? 0 : 20)
@@ -44,20 +48,36 @@ struct GameplayScreen: View {
             .padding(.bottom, 260)
             .padding([.leading, .trailing], 30)
         }
-        .onChange(of: gameViewModel.state) { _, newValue in
-            if newValue == .completed {
-                gameStats.endedGameWithResult(.init(towerSize: gameViewModel.towerSize,
-                                                    solved: true,
-                                                    solvedMoves: gameViewModel.moves,
-                                                    pefectlySolved: gameViewModel.moves == gameViewModel.perfectMoveCount))
-                dismiss()
+        .overlay {
+            if showCelebration, let result = gameResult {
+                CelebrationScreen(result: result) {
+                    dismiss()
+                }
             }
         }
-    
+        .onChange(of: gameViewModel.state) { _, newValue in
+            if newValue == .completed {
+                gameResult = .init(towerSize: gameViewModel.towerSize,
+                                   solved: true,
+                                   solvedMoves: gameViewModel.moves,
+                                   pefectlySolved: gameViewModel.moves == gameViewModel.perfectMoveCount)
+                showCelebration.toggle()
+                gameStats.endedGameWithResult(gameResult!)
+            }
+        }
+        .onAppear() {
+            gameViewModel.gameBegin()
+        }
     }
 }
 
 #Preview {
+    var gameViewModel = GameViewModel()
+        
     GameplayScreen()
-        .environmentObject(GameViewModel(towerSize: 10))
+        .environmentObject(gameViewModel)
+        .environmentObject(GameStatsViewModel(useSampleData: true))
+        .task {
+        gameViewModel.prepareGameWithWoterSize(4)
+    }
 }

@@ -12,6 +12,7 @@ struct HanoiTowersApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(GameViewModel())
                 .environmentObject(GameStatsViewModel())
         }
     }

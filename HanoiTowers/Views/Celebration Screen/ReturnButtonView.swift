@@ -1,13 +1,13 @@
 //
-//  PlayButton.swift
+//  ReturnButtonView.swift
 //  HanoiTowers
 //
-//  Created by Fernando Draghi on 27/11/2024.
+//  Created by Fernando Draghi on 29/11/2024.
 //
 
 import SwiftUI
 
-struct PlayButtonView: View {
+struct ReturnButtonView: View {
     let buttonAction: () -> Void
     @State private var animating = false
     var body: some View {
@@ -20,7 +20,7 @@ struct PlayButtonView: View {
                         .foregroundStyle(.mint)
                         .clipShape(.rect(cornerRadius: 12))
                         .shadow(color: .mint, radius: animating ? 25 : 5)
-                    Text("PLAY!")
+                    Text("MAIN MENU")
                         .foregroundStyle(.white)
                         .font(.gameFont)
                         .bold()
@@ -37,5 +37,5 @@ struct PlayButtonView: View {
 }
 
 #Preview {
-    PlayButtonView {}
+    ReturnButtonView {}
 }

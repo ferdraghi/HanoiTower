@@ -7,20 +7,20 @@
 import SwiftUI
 
 enum GameViewModelState {
-    case playing, failedMove, successfulMove, completed
+    case idle, playing, failedMove, successfulMove, completed
 }
 
 @MainActor
 class GameViewModel: ObservableObject {
-    let towerSize: Int
-    let towerCount: Int
+    var towerSize: Int = 0
+    var towerCount: Int = 0
     private(set) var towerViewModels: [GameTowerViewModel] = []
     private(set) var moves = 0
     private(set) var lastSuccessfulMove: Int?
     var perfectMoveCount: Int {
         Int(pow(2, Double(towerSize))) - 1
     }
-    @Published var state: GameViewModelState = .playing
+    @Published var state: GameViewModelState = .idle
 
     @Published private(set) var selectedTower: Int? {
         willSet {
@@ -34,13 +34,20 @@ class GameViewModel: ObservableObject {
         }
     }
     
-    init(towerSize: Int, towerCount: Int = 3) {
-        self.towerSize = towerSize
+    func prepareGameWithWoterSize(_ size: Int, towerCount: Int = 3) {
+        state = .idle
+        towerSize = size
         self.towerCount = towerCount
-        
+        towerViewModels = []
+        moves = 0
+        lastSuccessfulMove = nil
         (0..<towerCount).forEach { index in
             self.towerViewModels.append(GameTowerViewModel(numberOfPieces: index == 0 ? towerSize : 0))
         }
+    }
+    
+    func gameBegin() {
+        state = .playing
     }
     
     func piecesForTower(_ tower: Int) -> [TowerPiece] {
