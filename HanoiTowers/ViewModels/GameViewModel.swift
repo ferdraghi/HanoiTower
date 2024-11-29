@@ -13,6 +13,7 @@ enum GameViewModelState {
 @MainActor
 class GameViewModel: ObservableObject {
     let towerSize: Int
+    let towerCount: Int
     private(set) var towerViewModels: [GameTowerViewModel] = []
     private(set) var moves = 0
     private(set) var lastSuccessfulMove: Int?
@@ -33,9 +34,13 @@ class GameViewModel: ObservableObject {
         }
     }
     
-    init(towerSize: Int) {
+    init(towerSize: Int, towerCount: Int = 3) {
         self.towerSize = towerSize
-        self.towerViewModels = [GameTowerViewModel(numberOfPieces: towerSize), GameTowerViewModel(numberOfPieces: 0), GameTowerViewModel(numberOfPieces: 0)]
+        self.towerCount = towerCount
+        
+        (0..<towerCount).forEach { index in
+            self.towerViewModels.append(GameTowerViewModel(numberOfPieces: index == 0 ? towerSize : 0))
+        }
     }
     
     func piecesForTower(_ tower: Int) -> [TowerPiece] {
@@ -71,7 +76,7 @@ class GameViewModel: ObservableObject {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [weak self] in
             guard let self = self else { return }
             
-            let completed = self.towerViewModels[2].pieceCount == self.towerSize
+            let completed = self.towerViewModels.last?.pieceCount == self.towerSize
             state = completed ? .completed : .playing
         }
     }

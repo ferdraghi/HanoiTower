@@ -28,7 +28,7 @@ struct GameplayScreen: View {
             
             Spacer()
             HStack(alignment: .bottom) {
-                ForEach(0...2, id: \.self) { index in
+                ForEach(0..<gameViewModel.towerCount, id: \.self) { index in
                     TowerView(towerSize: towerSize)
                     .environmentObject(gameViewModel.towerViewModels[index])
                     .onTapGesture {
