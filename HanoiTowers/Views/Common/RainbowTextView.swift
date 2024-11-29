@@ -18,30 +18,27 @@ struct RainbowTextView: View {
     }
     
     var body: some View {
-        GeometryReader { g in
-            VStack {
-                LinearGradient(
-                    colors: [.red, .blue, .green, .yellow],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-                .mask {
-                    Text(text)
-                        .font(.gameFont(size: size))
-                        .lineLimit(2)
-                        .multilineTextAlignment(.center)
-                        .minimumScaleFactor(0.5)
-                        .shadow(color: .white, radius: 5)
-                }
-                .frame(width: g.size.width, height: 200)
+        VStack {
+            LinearGradient(
+                colors: [.red, .blue, .green, .yellow],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .mask {
+                Text(text)
+                    .font(.gameFont(size: size))
+                    .lineLimit(2)
+                    .multilineTextAlignment(.center)
+                    .minimumScaleFactor(0.5)
+                    .shadow(color: .white, radius: 5)
             }
-            .hueRotation(.degrees(shiftColors ? 720 : 360))
-            .animation(.linear(duration: 2).repeatForever(autoreverses: true), value: shiftColors)
         }
+        .hueRotation(.degrees(shiftColors ? 720 : 360))
+        .animation(.linear(duration: 2).repeatForever(autoreverses: true), value: shiftColors)
         .onAppear() {
             shiftColors.toggle()
         }
-
+        
     }
 }
 
